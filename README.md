@@ -65,6 +65,7 @@ https://yande.re/post/show/1030050
 https://gelbooru.com/index.php?page=post&s=view&id=7833082
 https://konachan.com/post/show/348800
 ```
+<div align="center"> <img src="https://github.com/Zhaokugua/anime_image_search/blob/main/screenshots/Screenshot_2023-10-02-21-31-48-320_com.tencent.mobileqq.png" width="50%"> </div>
 
 ### ascii2d
 <div align="center"> <img src="https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg" width="50%"> </div>
@@ -84,6 +85,7 @@ https://www.pixiv.net/artworks/102024818
 [CQ:image,file=https://ascii2d.net/thumbnail/0/2/6/6/0266d95e02d694d5ab5ea922bea3fabb.jpg]
 https://twitter.com/ShindoWolf0825/status/1391166021571067906
 ```
+<div align="center"> <img src="https://github.com/Zhaokugua/anime_image_search/blob/main/screenshots/Screenshot_2023-10-02-21-31-25-054_com.tencent.mobileqq.png" width="50%"> </div>
 
 ### TraceMoe
 根据番剧截图搜索番剧，图片尽量不要裁剪，不要有黑边，保持完整的画面，搜索的结果更佳。
@@ -116,6 +118,7 @@ Food Wars! The Fifth Plate
 食戟之靈 豪之皿
 Shokugeki no Souma Gou no Sara - 08 (BD 1280x720 x264 AAC).mp4 14:13
 ```
+<div align="center"> <img src="https://github.com/Zhaokugua/anime_image_search/blob/main/screenshots/Screenshot_2023-10-02-21-30-33-864_com.tencent.mobileqq.png" width="50%"> </div>
 
 ### AnimeTrace
 
