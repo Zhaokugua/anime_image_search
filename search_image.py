@@ -158,5 +158,5 @@ if __name__ == '__main__':
     # print(get_saucenao_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg'))
     # get_anime_info_by_id(147864)
     # get_ascii2d_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg')
-    # print(get_trace_moe_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg'))
-    print(get_animedb_info('https://myhkw.cn/openapi/img/acg/0072Vf1pgy1foxk6jltvsj31hc0u0kbm.jpg'))
+    # print(get_trace_moe_image('https://azurlane-anime.jp/story/images/09-4.jpg'))
+    print(get_animedb_info('https://azurlane-anime.jp/story/images/09-4.jpg'))
