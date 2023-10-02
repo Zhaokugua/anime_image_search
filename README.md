@@ -70,9 +70,9 @@ https://konachan.com/post/show/348800
 ### ascii2d
 图片色阶搜索
 
-已知问题：使用qq私聊图片链接(https://c2cpicdw.qpic.cn/offpic_new/ 这种链接格式)搜索有可能得到无效的搜索结果。
-
-因为未知原因导致ascii2d所读取到的图片信息并非想搜索的信息，而是qq空间的图片防盗链默认图片（此图片来自QQ空间未经允许不可引用）
+>已知问题：使用qq私聊图片链接(https://c2cpicdw.qpic.cn/offpic_new/ 这种链接格式)搜索有可能得到无效的搜索结果。
+>
+>因为未知原因导致ascii2d所读取到的图片信息并非想搜索的信息，而是qq空间的图片防盗链默认图片（此图片来自QQ空间未经允许不可引用）
 
 <div align="center"> <img src="https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg" width="50%"> </div>
 
