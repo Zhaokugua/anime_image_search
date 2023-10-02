@@ -126,8 +126,8 @@ def get_anime_info_by_id(anime_id):
 
 
 def get_animedb_info(img_url, model='anime_model_lovelive'):
-    # mode: anime anime_model_lovelive pre_stable
-    # game game_model_kirakira
+    # anime model: anime anime_model_lovelive pre_stable
+    # galgame model: game game_model_kirakira
     image_data_content = requests.get(img_url).content
     encoder = MultipartEncoder(
         {
