@@ -45,7 +45,7 @@ MAX_FIND_IMAGE_COUNT = 3
 <div align="center"> <img src="https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg" width="50%"> </div>
 
 ```python
->>> print(get_saucenao_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg'))
+>>> get_saucenao_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg')
 ```
 ```
 Saucenao识图成功！
@@ -171,7 +171,7 @@ model可以选择game（低准确率Galgame模型）或者game_model_kirakira（
 <div align="center"> <img src="https://clan.akamai.steamstatic.com/images//36817056/74b0f5fca29e62ded54b8a5ccb7a7389ee20f817.png" width="50%"> </div>
 
 ```python
-get_animedb_info('https://clan.akamai.steamstatic.com/images//36817056/74b0f5fca29e62ded54b8a5ccb7a7389ee20f817.png', model='game_model_kirakira')
+>>> get_animedb_info('https://clan.akamai.steamstatic.com/images//36817056/74b0f5fca29e62ded54b8a5ccb7a7389ee20f817.png', model='game_model_kirakira')
 ```
 ```
 animedb搜索成功！识别到2个角色。
