@@ -2,7 +2,7 @@
 @FILE_NAME : search_image
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2023/10/1 22:48
+@Time : 2023/12/4 11:47
 """
 import re
 import requests
@@ -12,13 +12,12 @@ from requests_toolbelt import MultipartEncoder
 # 接口地址
 API_URL_SAUCENAO = "https://saucenao.com/search.php"
 API_URL_ASCII2D = "https://ascii2d.net/search/url/"
-API_URL_IQDB = "https://iqdb.org/"   # 暂未支持
+API_URL_IQDB = "https://iqdb.org/"
 API_URL_TRACE_MOE = "https://api.trace.moe/search?cutBorders&url="
 API_URL_ANIME_DB = "https://aiapiv2.animedb.cn/"
 
 # SAUCENAO的APIKEY
-# API KEY可以在SAUCENAO注册账号之后在用户中心-API处获取https://saucenao.com/user.php?page=search-api
-SAUCENAO_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+SAUCENAO_API_KEY = "bc794d97b082519ae8c5f303398b3182b4a592c1"
 # 最多返回图片数量
 MAX_FIND_IMAGE_COUNT = 3
 
@@ -126,8 +125,8 @@ def get_anime_info_by_id(anime_id):
 
 
 def get_animedb_info(img_url, model='anime_model_lovelive'):
-    # anime model: anime anime_model_lovelive pre_stable
-    # galgame model: game game_model_kirakira
+    # mode: anime anime_model_lovelive pre_stable
+    # game game_model_kirakira
     image_data_content = requests.get(img_url).content
     encoder = MultipartEncoder(
         {
@@ -141,11 +140,13 @@ def get_animedb_info(img_url, model='anime_model_lovelive'):
         'Referer': 'https://ai.animedb.cn/',
         'Origin': 'https://ai.animedb.cn'
     }
-    result_json = requests.post(f'{API_URL_ANIME_DB}ai/api/detect?force_one=1&model={model}&ai_detect=0', headers=headers, data=encoder).json()
-    if not result_json:
-        return 'animedb搜索失败！找不到高相似度的匹配。'
+    result_json = requests.post(f'{API_URL_ANIME_DB}ai/api/detect?force_one=1&model={model}&ai_detect=1', headers=headers, data=encoder).json()
+    ai_info = result_json['ai']
+    ai_msg = '【该图片很可能是ai图】' if ai_info else '【该图片可能不是ai图】'
+    if not result_json['data']:
+        return ai_msg + '\n' + 'animedb搜索失败！找不到高相似度的匹配。'
     face_num = len(result_json['data'])
-    msg = f'animedb搜索成功！识别到{face_num}个角色。'
+    msg = ai_msg + '\n' + f'animedb搜索成功！识别到{face_num}个角色。'
     count = 1
     for charactor in result_json["data"]:
         char_list = [f'{x["name"]}《{x["cartoonname"]}》' for x in charactor['char'][:MAX_FIND_IMAGE_COUNT]]
@@ -154,9 +155,89 @@ def get_animedb_info(img_url, model='anime_model_lovelive'):
     return msg
 
 
+def ai_detect(image_url, mode=1):
+    if mode == 0:
+        res_message = '根据aiornot.com的鉴定结果，'
+        # 免费版API每月限额100
+        AI_OR_NOT_KEY = 'YOUR_API_KEY'
+        AI_OR_NOT_headers = {
+            'Authorization': 'Bearer ' + AI_OR_NOT_KEY,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        }
+        AI_OR_NOT_url = 'https://api.aiornot.com/v1/reports/image'
+        AI_OR_NOT_body = {
+            'object': f'{image_url}'
+        }
+        res = requests.post(AI_OR_NOT_url, headers=AI_OR_NOT_headers, json=AI_OR_NOT_body).json()
+        res_message = res_message + '该图片很有可能是AI图' if res['report']['ai']['is_detected'] else res_message + '该图片很可能不是AI图'
+    else:
+        res_message = 'hivemoderation.com的鉴定结果概率如下：\n'
+
+        # 这是自己试出来的直接提供图片url鉴别的方法
+        req_url = f'https://ajax.thehive.ai/api/demo/classify?endpoint=ai_generated_image_detection&email_to=&data_url=&hash=&check_cache=true&image_url={image_url}'
+        headers = {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+            'Origin': 'https://hivemoderation.com',
+            'Referer': 'https://hivemoderation.com/',
+        }
+        data = {
+            'media_type': 'photo',
+            'model_type': 'classification',
+        }
+        res = requests.post(req_url, headers=headers, json=data).json()
+
+        # 下面是官网抓包得到的POST上传图片的方法
+        # req_url = f'https://ajax.thehive.ai/api/demo/classify?endpoint=ai_generated_image_detection&email_to=&data_url=&hash=&check_cache=true&image_url='
+        # image_data_content = requests.get(image_url).content
+        # encoder = MultipartEncoder(
+        #     {
+        #         'media_type': 'photo',
+        #         'model_type': 'classification',
+        #         'image': ('test.jpg', image_data_content, "image/jpeg"),
+        #     }
+        # )
+        # headers = {
+        #     'Accept': 'application/json, text/plain, */*',
+        #     'Content-Type': encoder.content_type,
+        #     'Origin': 'https://hivemoderation.com',
+        #     'Referer': 'https://hivemoderation.com/',
+        # }
+        #
+        # res = requests.post(req_url, data=encoder, headers=headers).json()
+        translate_dict = {
+            'not_ai_generated': '不是AI生成',
+            'ai_generated': '是AI生成',
+            'none': '未检测到AI',
+            'dalle': 'OpenAI Dalle模型生成',
+            'midjourney': 'midjourney模型生成',
+            'stablediffusion': 'StableDiffusion(SD)模型生成',
+            'hive': 'hive模型生成',
+            'bingimagecreator': '必应图片生成工具生成',
+            'gan': 'GAN生成对抗网络生成',
+            'adobefirefly': 'Adobe Firefly萤火虫生成',
+            'kandinsky': 'kandinsky开源AI模型生成',
+            'stablediffusionxl': 'StableDiffusionXL(SDXL)模型生成'
+        }
+
+        res_classes = res['response']['output'][0]['classes']
+        res_classes = [{'class': translate_dict.get(x['class'], x['class']), 'score': x['score']} for x in res_classes]
+        res_classes = sorted(res_classes, key=lambda x: x['score'], reverse=True)
+        res_classes = res_classes[:3]
+        for each_class in res_classes:
+            res_message = res_message + f"\n{each_class['class']}: {round(each_class['score'] * 100, 2)}%"
+        print('喵')
+
+    return res_message
+
+
 if __name__ == '__main__':
-    # print(get_saucenao_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg'))
+    # print(get_saucenao_image('https://gchat.qpic.cn/gchatpic_new/2684546339/937972042-2886616332-0BF069E655A3CCF64C79D2EB26F7D2A2/0?term=2&amp;is_origin=0'))
     # get_anime_info_by_id(147864)
     # get_ascii2d_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg')
-    # print(get_trace_moe_image('https://azurlane-anime.jp/story/images/09-4.jpg'))
-    print(get_animedb_info('https://azurlane-anime.jp/story/images/09-4.jpg'))
+    # print(get_trace_moe_image('https://gchat.qpic.cn/gchatpic_new/1066168689/937972042-2195784184-0F05C3E5B3CDFEE87A68155A5C8276F1/0?term=2&amp;is_origin=0'))
+    # print(get_animedb_info('https://myhkw.cn/openapi/img/acg/0072Vf1pgy1foxk6jltvsj31hc0u0kbm.jpg'))
+    print(ai_detect('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg'))
+    print('喵')
+
