@@ -17,7 +17,7 @@ API_URL_TRACE_MOE = "https://api.trace.moe/search?cutBorders&url="
 API_URL_ANIME_DB = "https://aiapiv2.animedb.cn/"
 
 # SAUCENAO的APIKEY
-SAUCENAO_API_KEY = "bc794d97b082519ae8c5f303398b3182b4a592c1"
+SAUCENAO_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 # 最多返回图片数量
 MAX_FIND_IMAGE_COUNT = 3
 
@@ -125,8 +125,8 @@ def get_anime_info_by_id(anime_id):
 
 
 def get_animedb_info(img_url, model='anime_model_lovelive'):
-    # mode: anime anime_model_lovelive pre_stable
-    # game game_model_kirakira
+    # anime model: anime anime_model_lovelive pre_stable
+    # galgame model: game game_model_kirakira
     image_data_content = requests.get(img_url).content
     encoder = MultipartEncoder(
         {
@@ -233,9 +233,11 @@ def ai_detect(image_url, mode=1):
 
 
 if __name__ == '__main__':
-    # print(get_saucenao_image('https://gchat.qpic.cn/gchatpic_new/2684546339/937972042-2886616332-0BF069E655A3CCF64C79D2EB26F7D2A2/0?term=2&amp;is_origin=0'))
+    # print(get_saucenao_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg'))
     # get_anime_info_by_id(147864)
     # get_ascii2d_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg')
+    # print(get_trace_moe_image('https://azurlane-anime.jp/story/images/09-4.jpg'))
+    print(get_animedb_info('https://azurlane-anime.jp/story/images/09-4.jpg'))
     # print(get_trace_moe_image('https://gchat.qpic.cn/gchatpic_new/1066168689/937972042-2195784184-0F05C3E5B3CDFEE87A68155A5C8276F1/0?term=2&amp;is_origin=0'))
     # print(get_animedb_info('https://myhkw.cn/openapi/img/acg/0072Vf1pgy1foxk6jltvsj31hc0u0kbm.jpg'))
     print(ai_detect('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg'))
