@@ -275,6 +275,11 @@ def get_soutu_bot_image(img_url):
     if res.status_code != 200:
         if res.status_code == 401:
             res_msg = '接口坏掉了qwq你可以自己试着去搜：https://soutubot.moe'
+        elif res.status_code == 403:
+            if 'Just a moment...' in res.text:
+                res_msg = '被cloudflare拦截了qwq你可以自己试着去搜：https://soutubot.moe'
+            else:
+                res_msg = f'未知错误HTTP{res.status_code} {res.text}'
         else:
             res_msg = f'未知错误HTTP{res.status_code} {res.text}'
     else:
