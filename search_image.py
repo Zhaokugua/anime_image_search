@@ -232,6 +232,62 @@ def ai_detect(image_url, mode=1):
     return res_message
 
 
+def get_soutu_bot_image(img_url):
+    image_data_content = requests.get(img_url).content
+    encoder = MultipartEncoder(
+        {
+            'file': ('test.jpg', image_data_content, "image/jpeg"),
+            'factor': '1.2',
+        }
+    )
+
+    headers = {
+        'Content-Type': encoder.content_type,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.47',
+        'Referer': 'https://soutubot.moe/',
+        'Origin': 'https://soutubot.moe',
+        'X-Api-Key': '',
+        'X-Requested-With': 'XMLHttpRequest',
+    }
+
+    # js的源码在这里，对时间戳和浏览器ua的长度分别求平方然后加起来，后来又改了又加了一个window.GLOBAL.m
+    # 不知道这个是什么，这个过一段时间会刷新，但是需要手动刷新浏览器才能刷新，不刷新浏览器页面的话在网页上也不能用
+    # 先写个常量放上去试试
+    # 然后将上面得到的数字转换成字符串，进行base64编码，然后进行逆序，再把=等其他字符去掉，就得到了X-Api-Key
+    # 方法参考https://www.cnblogs.com/znsbc-13/p/17437493.html
+    # const RC = ()=>{
+    #         const e = (Math.pow(Q().unix(), 2) + Math.pow(window.navigator.userAgent.length, 2) + window.GLOBAL.m).toString();
+    #         return En.encode(e).split("").reverse().join("").replace(/=/g, "")
+    #     }
+    Q = str(int(pow(time.time(), 2)) + int(pow(len(headers["User-Agent"]), 2)) + 3008452091121)
+    encoded_data = str(base64.b64encode(Q.encode()).decode())[::-1].replace("=", "")
+    headers.update({"X-Api-Key": encoded_data})
+
+    res = requests.post(f'https://soutubot.moe/api/search', headers=headers, data=encoder)
+    if res.status_code != 200:
+        if res.status_code == 401:
+            res_msg = '接口坏掉了qwq你可以自己试着去搜：https://soutubot.moe'
+        else:
+            res_msg = f'未知错误HTTP{res.status_code} {res.text}'
+    else:
+        result_json = res.json()
+        res_msg = 'soutubot.moe搜索结果如下：'
+
+        ehentai_mirror_list = ['https://exhentai.org', 'https://e-hentai.org']
+        nhentai_mirror_list = ['https://nhentai.net', 'https://nhentai.xxx']
+
+        mirror_link = {
+            'ehentai': ehentai_mirror_list[0],
+            'nhentai': nhentai_mirror_list[0],
+        }
+
+        for result in result_json['data'][:MAX_FIND_IMAGE_COUNT]:
+            res_msg = res_msg + '\n' + f'【相似度{result["similarity"]}%】\n[CQ:image,file={result["previewImageUrl"]}]\n' \
+                                       f'{result["title"]}\n{mirror_link[result["source"]]}{result["subjectPath"]}'
+
+    return res_msg
+
+
 if __name__ == '__main__':
     # print(get_saucenao_image('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg'))
     # get_anime_info_by_id(147864)
@@ -241,5 +297,6 @@ if __name__ == '__main__':
     # print(get_trace_moe_image('https://gchat.qpic.cn/gchatpic_new/1066168689/937972042-2195784184-0F05C3E5B3CDFEE87A68155A5C8276F1/0?term=2&amp;is_origin=0'))
     # print(get_animedb_info('https://myhkw.cn/openapi/img/acg/0072Vf1pgy1foxk6jltvsj31hc0u0kbm.jpg'))
     print(ai_detect('https://blog.jixiaob.cn/content/uploadfile/202210/0b191665462315.jpg'))
+    print(get_soutu_bot_image('https://i7.nhentai.net/galleries/886703/14.jpg'))
     print('喵')
 
