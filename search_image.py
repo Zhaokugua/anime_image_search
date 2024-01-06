@@ -221,7 +221,14 @@ def ai_detect(image_url, mode=1):
             'kandinsky': 'kandinsky开源AI模型生成',
             'stablediffusionxl': 'StableDiffusionXL(SDXL)模型生成'
         }
+        # {'return_code': 400, 'message': 'Unable to download file from url'}
+        if not res.get('response'):
+            if res['message'] == 'Unable to download file from url':
+                return f'图片无法上传到ai图片鉴别的服务器。请尝试压缩图片或在群里发送图片。'
 
+            print('搜索出错！：\n', res)
+            return f'ai图片鉴别出错，请稍后重试。\n{res}'
+            
         res_classes = res['response']['output'][0]['classes']
         res_classes = [{'class': translate_dict.get(x['class'], x['class']), 'score': x['score']} for x in res_classes]
         res_classes = sorted(res_classes, key=lambda x: x['score'], reverse=True)
