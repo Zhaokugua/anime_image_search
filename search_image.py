@@ -18,7 +18,9 @@ API_URL_ANIME_DB = "https://aiapiv2.animedb.cn/"
 
 # SAUCENAO的APIKEY
 SAUCENAO_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-# 最多返回图片数量
+# AI_OR_NOT的APIKEY
+AI_OR_NOT_KEY = 'YOUR_API_KEY'
+# 最多返回搜图结果数量
 MAX_FIND_IMAGE_COUNT = 3
 
 
@@ -159,7 +161,6 @@ def ai_detect(image_url, mode=1):
     if mode == 0:
         res_message = '根据aiornot.com的鉴定结果，'
         # 免费版API每月限额100
-        AI_OR_NOT_KEY = 'YOUR_API_KEY'
         AI_OR_NOT_headers = {
             'Authorization': 'Bearer ' + AI_OR_NOT_KEY,
             'Content-Type': 'application/json',
