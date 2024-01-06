@@ -3,16 +3,19 @@ search anime image 自用机器人搜图封装
 
 提供图片的url地址即可返回搜索结果。
 
-结果已经使用CQ码描述好可以直接发送。
+结果已经使用CQ码描述好可以直接发送，推荐使用支持CQ码的机器人。
 
 ## 🚀目前支持的网站
 
 | 网站名称    | 是否支持 | 备注 |
 | --------   | -------  | ----- |
-| [ascii2d](https://ascii2d.net/)    | ✔        | ascii2d色阶搜索 |
-| [AnimeTrace](https://ai.animedb.cn/) | ✔        | 番剧、Galgame游戏角色搜索 |
-| [SauceNAO](https://saucenao.com)   | ✔        | saucenao以图搜图 |
-| [TraceMoe](https://trace.moe/)   | ✔        | 番剧截图搜索 |
+| [ascii2d](https://ascii2d.net/)    | ✔        | ascii2d色阶搜索（支持Pixiv、Twitter（X）等） |
+| [AnimeTrace](https://ai.animedb.cn/) | ✔        | 番剧、Galgame游戏角色搜索（自动识别角色脸部并搜索对应人物和出处作品） |
+| [SauceNAO](https://saucenao.com)   | ✔        | saucenao以图搜图（支持Piviv等） |
+| [TraceMoe](https://trace.moe/)   | ✔        | 番剧截图搜索（尽量保持原比例截图，不能有黑边或者裁切局部图） |
+| [搜图bot酱](https://soutubot.moe/)   | ✔        | 本子搜索（支持ehentai、nhentai，支持局部图搜索） |
+| [AI or Not](https://www.aiornot.com/)   | ✔        | AI or Not <br> AI图片鉴别 （需要API-KEY，每月免费限额100次，免费版看不到详情）|
+| [AI-Generated Content Detection Hive](https://hivemoderation.com/ai-generated-content-detection)   | ✔        | HIVE MODERATION <br> AI图片鉴别 （暂未发现限制，支持分类及准确率等详情信息）|
 | [Yandex](https://yandex.com/images)     | ❌       | yandex图片搜索 |
 | [EHentai](https://e-hentai.org)    | ❌        | 漫画搜索 |
 | [IqDB](https://iqdb.org/)       | ❌        | idqb聚合图片搜索
